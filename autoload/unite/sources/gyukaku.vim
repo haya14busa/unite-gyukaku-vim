@@ -19,9 +19,9 @@ endfunction
 function! s:get_menu()
   let res = webapi#http#get("http://www.gyukaku.ne.jp/menu/index.html")
   let dom = webapi#html#parse(iconv(res.content, 'utf-8', &encoding))
-  for li in dom.find('ul', {'id': 'mNavi'}).childNodes('li')
-    let url = 'http://www.gyukaku.ne.jp/menu/' . li.childNode('a').attr['href']
-    let name = li.find('img').attr['alt']
+  for atag in dom.find('div', {'id': 'menu_link_inner'}).childNodes('a')
+    let url = 'http://www.gyukaku.ne.jp' . atag.attr['href']
+    let name = atag.child[0]
     call add(s:yakiniku, [name, url])
   endfor
 endfunction
